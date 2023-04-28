@@ -59,21 +59,21 @@ if($datavenc1_ == date("Y-m-d")){
  $AUTOFOCUS2 = "$('input[name=search]').focus();";
  $sql = "
         -- ----------------------------------------------------------
-        SELECT * FROM `_view_bases`
-        WHERE `_view_bases`.`cliente_nome` LIKE '%$search%'
+        SELECT * FROM `_view_{$PREFIXO_PATH}_bases`
+        WHERE `_view_{$PREFIXO_PATH}_bases`.`cliente_nome` LIKE '%$search%'
         AND {$busc_venc}
-        OR `_view_bases`.`cliente_nome` LIKE '%$search%'
+        OR `_view_{$PREFIXO_PATH}_bases`.`cliente_nome` LIKE '%$search%'
         -- AND `contrato_id` IS NULL
-        ORDER BY `_view_bases`.`contrato_vencimento` ASC
+        ORDER BY `_view_{$PREFIXO_PATH}_bases`.`contrato_vencimento` ASC
          LIMIT {$linha_inicial}, " . QTDE_REGISTROS . "
         -- ----------------------------------------------------------
     ";
      /* Conta quantos registos existem na tabela */  
-      $sqlContador = "SELECT COUNT(*) AS `total_registros` FROM `_view_bases` WHERE `_view_bases`.`cliente_nome` LIKE '%$search%' AND {$busc_venc} OR `_view_bases`.`cliente_nome` LIKE '%$search%'"; 
-      //$sqlContadorStatus = "SELECT `contrato_status` AS `status`, COUNT(*) AS `total` FROM `_view_bases` WHERE `cliente_nome` LIKE  '%$search%' GROUP BY `contrato_status`";
-      //$sqlContadorStatusNULL = "SELECT COUNT(*) AS `total` FROM  `_view_bases` WHERE `contrato_id` IS NULL AND  `cliente_nome` LIKE  '%$search%'";
-      $sqlContadorStatus = "SELECT `contrato_status` AS `status`, COUNT(*) AS `total` FROM `_view_bases` GROUP BY `contrato_status`";
-      $sqlContadorStatusNULL = "SELECT COUNT(*) AS `total` FROM  `_view_bases` WHERE `contrato_id` IS NULL";
+      $sqlContador = "SELECT COUNT(*) AS `total_registros` FROM `_view_{$PREFIXO_PATH}_bases` WHERE `_view_{$PREFIXO_PATH}_bases`.`cliente_nome` LIKE '%$search%' AND {$busc_venc} OR `_view_{$PREFIXO_PATH}_bases`.`cliente_nome` LIKE '%$search%'"; 
+      //$sqlContadorStatus = "SELECT `contrato_status` AS `status`, COUNT(*) AS `total` FROM `_view_{$PREFIXO_PATH}_bases` WHERE `cliente_nome` LIKE  '%$search%' GROUP BY `contrato_status`";
+      //$sqlContadorStatusNULL = "SELECT COUNT(*) AS `total` FROM  `_view_{$PREFIXO_PATH}_bases` WHERE `contrato_id` IS NULL AND  `cliente_nome` LIKE  '%$search%'";
+      $sqlContadorStatus = "SELECT `contrato_status` AS `status`, COUNT(*) AS `total` FROM `_view_{$PREFIXO_PATH}_bases` GROUP BY `contrato_status`";
+      $sqlContadorStatusNULL = "SELECT COUNT(*) AS `total` FROM  `_view_{$PREFIXO_PATH}_bases` WHERE `contrato_id` IS NULL";
 
  }else{ $search='';  // listagem sem pesquisa
 $PESQ = " <span style=\"color:#AAA;\">Listagem de Clientes {[TOTAL]}</span>";
@@ -81,16 +81,16 @@ $AUTOFOCUS="";
 $AUTOFOCUS2 = "";
  $sql = "
         -- ----------------------------------------------------------
-        SELECT * FROM `_view_bases`
+        SELECT * FROM `_view_{$PREFIXO_PATH}_bases`
         WHERE {$busc_venc}
-        ORDER BY `_view_bases`.`contrato_vencimento` ASC
+        ORDER BY `_view_{$PREFIXO_PATH}_bases`.`contrato_vencimento` ASC
          LIMIT {$linha_inicial}, " . QTDE_REGISTROS . "
         -- ----------------------------------------------------------
     ";
      /* Conta quantos registos existem na tabela */  
-     $sqlContador = "SELECT COUNT(*) AS `total_registros` FROM `_view_bases` WHERE {$busc_venc}"; 
-     $sqlContadorStatus = "SELECT `contrato_status` AS `status`, COUNT(*) AS `total` FROM `_view_bases` GROUP BY `contrato_status`";
-     $sqlContadorStatusNULL = "SELECT COUNT(*) AS `total` FROM  `_view_bases` WHERE `contrato_id` IS NULL";
+     $sqlContador = "SELECT COUNT(*) AS `total_registros` FROM `_view_{$PREFIXO_PATH}_bases` WHERE {$busc_venc}"; 
+     $sqlContadorStatus = "SELECT `contrato_status` AS `status`, COUNT(*) AS `total` FROM `_view_{$PREFIXO_PATH}_bases` GROUP BY `contrato_status`";
+     $sqlContadorStatusNULL = "SELECT COUNT(*) AS `total` FROM  `_view_{$PREFIXO_PATH}_bases` WHERE `contrato_id` IS NULL";
 }
 //echo "{$sql}";
       /*

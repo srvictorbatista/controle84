@@ -313,7 +313,7 @@ function novocliente(
                       "               <label>Pacote / Plano / Produto</label>"+
                       "                <select name=\"cliente_pacoteid\" id=\"cliente_pacoteid\" class=\"form-control\" style=\"margin-bottom:5px; font-weight:bold;color:#007BFF;\" onchange=\"LoadPackData();\">"+
                       "                  <option value=\"0\" style=\"text-align:left;\" description_pack=\"\" price_pack=\"\">   ---   SELECIONE   ---   </option>"+
-<?  $statment = $conn->prepare("SELECT *, CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco` FROM `_pacotes` /*WHERE `id` > 0*/  ORDER BY `id` ASC"); $statment->execute(); $LIST_DESQ='';while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){$LIST_DESQ = str_replace("\r\n","\\\\n", $row_sql_cont['descricao']);echo"                      \"                  <option value=\\\"{$row_sql_cont['id']}\\\" description_pack=\\\"{$LIST_DESQ}\\\" price_pack=\\\"{$row_sql_cont['preco']}\\\">".str_replace("'","´",$row_sql_cont['nome'])."</option>\"+\n";}?>
+<?  $statment = $conn->prepare("SELECT *, CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco` FROM `{$PREFIXO_PATH}_pacotes` /*WHERE `id` > 0*/  ORDER BY `id` ASC"); $statment->execute(); $LIST_DESQ='';while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){$LIST_DESQ = str_replace("\r\n","\\\\n", $row_sql_cont['descricao']);echo"                      \"                  <option value=\\\"{$row_sql_cont['id']}\\\" description_pack=\\\"{$LIST_DESQ}\\\" price_pack=\\\"{$row_sql_cont['preco']}\\\">".str_replace("'","´",$row_sql_cont['nome'])."</option>\"+\n";}?>
                       "                </select>"+
                       "            </div>"+
 
@@ -494,7 +494,7 @@ function clienteedit(
                       "               <label>Pacote / Plano / Produto</label>"+
                       "                <select name=\"cliente_edit_pacoteid\" id=\"cliente_edit_pacoteid\" class=\"form-control\" style=\"margin-bottom:5px; font-weight:bold;color:#007BFF;\" onchange=\"Cliente_ReLoadPackData();\">"+
                       "                  <option value=\"0\" style=\"text-align:left;\" description_pack=\"\" price_pack=\"\">   ---   SELECIONE   ---   </option>"+
-<?  $statment = $conn->prepare("SELECT *, CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco` FROM `_pacotes` /*WHERE `id` > 0*/  ORDER BY `id` ASC"); $statment->execute(); $LIST_DESQ='';while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){$LIST_DESQ = str_replace("\r\n","\\\\n", $row_sql_cont['descricao']);echo"                      \"                  <option value=\\\"{$row_sql_cont['id']}\\\" description_pack=\\\"{$LIST_DESQ}\\\" price_pack=\\\"{$row_sql_cont['preco']}\\\">".str_replace("'","´",$row_sql_cont['nome'])."</option>\"+\n";}?>
+<?  $statment = $conn->prepare("SELECT *, CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco` FROM `{$PREFIXO_PATH}_pacotes` /*WHERE `id` > 0*/  ORDER BY `id` ASC"); $statment->execute(); $LIST_DESQ='';while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){$LIST_DESQ = str_replace("\r\n","\\\\n", $row_sql_cont['descricao']);echo"                      \"                  <option value=\\\"{$row_sql_cont['id']}\\\" description_pack=\\\"{$LIST_DESQ}\\\" price_pack=\\\"{$row_sql_cont['preco']}\\\">".str_replace("'","´",$row_sql_cont['nome'])."</option>\"+\n";}?>
                       "                </select>"+
                       "            </div>"+
 
@@ -729,7 +729,7 @@ function pagamentoedit(
                       "               <label>Pacote / Plano / Produto</label>"+
                       "                <select name=\"pagamento_edit_pacoteid\" id=\"pagamento_edit_pacoteid\" class=\"form-control\" style=\"margin-bottom:5px; font-weight:bold;color:#007BFF;\" onchange=\"Pagamento_ReLoadPackData();\">"+
                       "                  <option value=\"0\" style=\"text-align:left;\" description_pack=\"\" price_pack=\"\">   ---   SELECIONE   ---   </option>"+
-<?  $statment = $conn->prepare("SELECT *, CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco` FROM `_pacotes` /*WHERE `id` > 0*/  ORDER BY `id` ASC"); $statment->execute(); $LIST_DESQ='';while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){$LIST_DESQ = str_replace("\r\n","\\\\n", $row_sql_cont['descricao']);echo"                      \"                  <option value=\\\"{$row_sql_cont['id']}\\\" description_pack=\\\"{$LIST_DESQ}\\\" price_pack=\\\"{$row_sql_cont['preco']}\\\">".str_replace("'","´",$row_sql_cont['nome'])."</option>\"+\n";}?>
+<?  $statment = $conn->prepare("SELECT *, CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco` FROM `{$PREFIXO_PATH}_pacotes` /*WHERE `id` > 0*/  ORDER BY `id` ASC"); $statment->execute(); $LIST_DESQ='';while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){$LIST_DESQ = str_replace("\r\n","\\\\n", $row_sql_cont['descricao']);echo"                      \"                  <option value=\\\"{$row_sql_cont['id']}\\\" description_pack=\\\"{$LIST_DESQ}\\\" price_pack=\\\"{$row_sql_cont['preco']}\\\">".str_replace("'","´",$row_sql_cont['nome'])."</option>\"+\n";}?>
                       "                </select>"+
                       "            </div>"+
 

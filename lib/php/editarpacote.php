@@ -72,7 +72,7 @@ $DEBUG = "E: $pacote_edit_nome - $pacote_edit_descricao - $pacote_edit_valor - $
 
 
 		$sql = "
-	    	UPDATE `_pacotes` SET
+	    	UPDATE `{$PREFIXO_PATH}_pacotes` SET
 	    		`nome` = :nome,
 	    		`descricao` = :descricao,
 	    		`valor_base` =      
@@ -84,7 +84,7 @@ $DEBUG = "E: $pacote_edit_nome - $pacote_edit_descricao - $pacote_edit_valor - $
 				        ',', '.'
 				       )
 				     )
-	    	  WHERE `_pacotes`.`id` = :id;
+	    	  WHERE `{$PREFIXO_PATH}_pacotes`.`id` = :id;
 	    ";	            //-- --------------------------------------
 	            //-- REGISTRO DE LOG
 	            //-- --------------------------------------

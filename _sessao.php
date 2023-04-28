@@ -1,6 +1,7 @@
 <? @include_once('./_config.php');	@include_once('../../_config.php');	 @include_once('../../../_config.php');
 			    // -- -------------------------------------------------------
 				// -- Acessa sessao aberta pela url (via DB)
+                //*
 			        //-- --------------------------------------
 			        $sql = "SELECT *, COUNT(*) AS 'access' FROM `user_sessions` WHERE `sessao`='{$THISPG}' LIMIT 1";
 			        $statment = $conn->prepare($sql); $statment->execute(); 
@@ -15,24 +16,26 @@
 						exit();
 			    	}
 			    // -- -------------------------------------------------------
+                
 			    	
 if(    !empty($_SESSION)    ) {
     // -- -------------------------------------------------------
     // -- Verifica validade e existencia do usuario
     // -- -------------------------------------------------------
+    if(empty($_SESSION['USER_ID'])){ die("<SCRIPT>window.open('login/','_parent');</SCRIPT>");}
         //-- --------------------------------------
-        $sql = "SELECT `id`, `wa_id`, `wa_nick`, `wa_trustkey`, `nome`, `telefone`, `email`, `login`, `pwd`, `cadastro`, DATE_FORMAT(`cadastro`, '%d de %M de %Y as %H:%i:%s') AS `cadastro_formatado` FROM `user_profiles` WHERE id='{$_SESSION["USER_ID"]}' LIMIT 1";
+        $sql = "SELECT `id`, `wa_id`, `wa_nick`, `wa_trustkey`, `nome`, `telefone`, `email`, `login`, `pwd`, `cadastro`, DATE_FORMAT(`cadastro`, '%d de %M de %Y as %H:%i:%s') AS `cadastro_formatado` FROM `user_profiles` WHERE id='{$_SESSION['USER_ID']}' LIMIT 1";
         $statment = $conn->prepare($sql); $statment->execute(); 
         $USER_DB = $statment->fetch(PDO::FETCH_ASSOC);
-        // echo "USER_DB: ";print_r($USER_DB); echo "\r\n-------------------------------------\r\n";
+        // echo "USER_DB: ";print_r($USER_DB); echo "\r\n-------------------------------------\r\n"; exit();
         //-- --------------------------------------
     	// -- Verifica hosts e permissoes
         //-- --------------------------------------
-        $sql = "SELECT *, count(*) AS `count` FROM `_view_profiles_permiss` WHERE `user_id`='{$_SESSION["USER_ID"]}' AND `host` = '{$system_host}' AND `autorization` LIKE '%{$system_autorization}%';";
+        $sql = "SELECT *, count(*) AS `count` FROM `_view_profiles_permiss` WHERE `user_id`='{$_SESSION['USER_ID']}' AND `host` = '{$system_host}' AND `autorization` LIKE '%{$system_autorization}%';";
         //echo "{$sql}";  exit();
         $statment = $conn->prepare($sql); $statment->execute(); 
         $USER_ROLES_DB = $statment->fetch(PDO::FETCH_ASSOC);
-        // echo "USER_ROLES_DB: ";print_r($USER_ROLES_DB); echo "\r\n-------------------------------------\r\n";
+        // echo "{$sql}\r\nUSER_ROLES_DB: ";print_r($USER_ROLES_DB); echo "\r\n-------------------------------------\r\n"; exit();
         //-- --------------------------------------
         if($USER_ROLES_DB['count'] < 1){
         	//echo "sem permissao\r\n\r\n\r\n";
@@ -67,4 +70,5 @@ if(    !empty($_SESSION)    ) {
 	echo json_encode($data);
 exit();
 }
+/**/
 ?>

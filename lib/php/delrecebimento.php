@@ -47,7 +47,7 @@ $RETONRO_EXCLUIR_RECEB="";
 		    `contrato_quitado`,
 		    DATE_FORMAT (`contrato_quitado`, '%d/%m/%Y %H:%i:%s') AS `contrato_quitado_formatado`
 
-		  FROM `_view_contratos_recebidos` WHERE id='{$ID_RECEBIMENTO_EXCLUIR_RECEB}' LIMIT 1";
+		  FROM `_view{$PREFIXO_PATH}_contratos_recebidos` WHERE id='{$ID_RECEBIMENTO_EXCLUIR_RECEB}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$RECEBIM_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		//echo "RECEBIM_DB: ";print_r($RECEBIM_DB); echo "\r\n-------------------------------------\r\n";
@@ -64,7 +64,7 @@ $RETONRO_EXCLUIR_RECEB="";
 		
 
 		//-- --------------------------------------
-		$sql = "SELECT * FROM `_clientes` WHERE id='{$ID_CLIENTE_EXCLUIR_RECEB}' LIMIT 1";
+		$sql = "SELECT * FROM `{$PREFIXO_PATH}_clientes` WHERE id='{$ID_CLIENTE_EXCLUIR_RECEB}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$CLIENTE_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		//echo "CLIENTE_DB: ";print_r($CLIENTE_DB); echo "\r\n-------------------------------------\r\n";
@@ -72,7 +72,7 @@ $RETONRO_EXCLUIR_RECEB="";
 		
 
 		//-- --------------------------------------
-		$sql = "SELECT * FROM `_contratos` WHERE cliente_id='{$ID_CLIENTE_EXCLUIR_RECEB}' LIMIT 1";
+		$sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` WHERE cliente_id='{$ID_CLIENTE_EXCLUIR_RECEB}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		$CONTRATO_DB['valor'] = @str_replace('.', ',', $CONTRATO_DB['valor']);
@@ -103,7 +103,7 @@ $RETONRO_EXCLUIR_RECEB="";
 			$aviso_contrato = "<span class=\"badge bg-success bg-white\" style=\"font-size:15px;\">Vencimento {$venc_dia}/{$venc_mes}/{$venc_ano} foi quitado.</span> <br>";
 			//echo $aviso_contrato;exit();
 		    $sql = "
-		    	INSERT INTO `_contratos_quitados` (
+		    	INSERT INTO `{$PREFIXO_PATH}_contratos_quitados` (
 		    		`cliente_id`,
 		    		`pacote_id`,
 		    		`pacote_titulo`,
@@ -148,7 +148,7 @@ $RETONRO_EXCLUIR_RECEB="";
 		//-- ------------------- quitados BKP -----------------------
 		//-- --------------------------------------------------------
 		$sql = "
-		    	INSERT INTO `_contratos_quitados_bkp` (
+		    	INSERT INTO `{$PREFIXO_PATH}_contratos_quitados_bkp` (
 		    		`quitado_id`,
 		    		`cliente_id`,
 		    		`pacote_id`,
@@ -184,8 +184,8 @@ $RETONRO_EXCLUIR_RECEB="";
 			$statment->execute();
 	    //-- -----------------------------------------------
 		$sql = "
-			DELETE FROM `_contratos_quitados` 
-			WHERE `_contratos_quitados`.`id` = :id;    
+			DELETE FROM `{$PREFIXO_PATH}_contratos_quitados` 
+			WHERE `{$PREFIXO_PATH}_contratos_quitados`.`id` = :id;    
 	    ";
 	    $statment = $conn->prepare($sql);
 		    $statment->bindValue(':id', "{$ID_RECEBIMENTO_EXCLUIR_RECEB}");

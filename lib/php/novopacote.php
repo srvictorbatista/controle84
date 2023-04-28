@@ -65,7 +65,7 @@ $DEBUG = "$pacote_nome - $pacote_descricao - $pacote_valor - $pacote_pacoteid";
 
 
     $sql = "
-    	INSERT INTO `_pacotes` (
+    	INSERT INTO `{$PREFIXO_PATH}_pacotes` (
     		`nome`, 
     		`descricao`, 
     		`valor_base`

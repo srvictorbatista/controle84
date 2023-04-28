@@ -94,10 +94,10 @@ if(strlen($cliente_telefone) <= 10){$cliente_telefone='';}
 	endif;
 	/**/
     // -- -------------------------------------------------------
-    $sql = "SELECT id AS cliente_id, nome FROM `_clientes` WHERE `nome` = '$cliente_nome' LIMIT 1";
+    $sql = "SELECT id AS cliente_id, nome FROM `{$PREFIXO_PATH}_clientes` WHERE `nome` = '$cliente_nome' LIMIT 1";
 	$statment = $conn->prepare($sql); $statment->execute();  
 	$CLIENTE_DB = $statment->fetch(PDO::FETCH_ASSOC);
-	if($CLIENTE_DB['nome'] == $cliente_nome):
+	if(@$CLIENTE_DB['nome'] == $cliente_nome):
 			$errors = "ERRO: Este cliente já possui cadastro!";
 		    $data['success'] = false;
 		    $data['message'] = "<span style=\"color:#DC3545;\"><i class=\"bi bi-exclamation-triangle-fill\"></i> ".str_replace("\n", "<br>", $errors)."</span> 
@@ -112,7 +112,7 @@ if(strlen($cliente_telefone) <= 10){$cliente_telefone='';}
 
 
     $sql = "
-    	INSERT INTO `_clientes` (
+    	INSERT INTO `{$PREFIXO_PATH}_clientes` (
     		`nome`,
     		`telefone`,
     		`email`
@@ -135,14 +135,14 @@ if(strlen($cliente_telefone) <= 10){$cliente_telefone='';}
 	$statment->execute();
 //-- --------------------------------------
 
-$sql = "SELECT id AS cliente_id FROM `_clientes` ORDER BY id DESC LIMIT 1";
+$sql = "SELECT id AS cliente_id FROM `{$PREFIXO_PATH}_clientes` ORDER BY id DESC LIMIT 1";
 $statment = $conn->prepare($sql); $statment->execute(); 
 while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){
 	$ULTIMOCLIENTE = $row_sql_cont['cliente_id'];
 }
 //echo "---->".$ULTIMOCLIENTE;
 
-$sql = "SELECT nome, descricao FROM `_pacotes` WHERE id='{$cliente_pacoteid}' LIMIT 1";
+$sql = "SELECT nome, descricao FROM `{$PREFIXO_PATH}_pacotes` WHERE id='{$cliente_pacoteid}' LIMIT 1";
 $statment = $conn->prepare($sql); $statment->execute();
 $PACOTE_NOME='';$PACOTE_DESC='';$PACOTE_VALO='';
 while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){
@@ -153,7 +153,7 @@ while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){
 
 
     $sql = "
-    	INSERT INTO `_contratos` (
+    	INSERT INTO `{$PREFIXO_PATH}_contratos` (
     		`cliente_id`,
     		`pacote_id`,
     		`pacote_titulo`,
@@ -193,7 +193,7 @@ while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){
 	            //-- REGISTRO DE LOG
 	            //-- --------------------------------------
 					//-- --------------------------------------
-					$_try_sql = "SELECT * FROM `_contratos` ORDER BY `id` DESC LIMIT 1";
+					$_try_sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` ORDER BY `id` DESC LIMIT 1";
 					$statment = $conn->prepare($_try_sql); $statment->execute(); 
 					$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 					//echo "CONTRATO_DB: ";print_r($CONTRATO_DB); echo "\r\n-------------------------------------\r\n";
@@ -207,7 +207,7 @@ while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){
 		//-- --------------------------------------------------------
 		//-- --------------------------------------
 		$aviso_contrato='';
-		$sql = "SELECT * FROM `_contratos` WHERE cliente_id='{$ULTIMOCLIENTE}' LIMIT 1";
+		$sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` WHERE cliente_id='{$ULTIMOCLIENTE}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		$CONTRATO_DB['valor'] = str_replace('.', ',', $CONTRATO_DB['valor']);
@@ -215,7 +215,7 @@ while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){
 		//-- --------------------------------------
 			$aviso_contrato = "<span class=\"badge bg-success bg-white\" style=\"font-size:15px;\">Primeira quitação registrada na data de hoje.</span> <br>";
 		    $sql = "
-		    	INSERT INTO `_contratos_quitados` (
+		    	INSERT INTO `{$PREFIXO_PATH}_contratos_quitados` (
 		    		`cliente_id`,
 		    		`pacote_id`,
 		    		`pacote_titulo`,

@@ -48,14 +48,14 @@ $EXIBE_TOKEN = "\n\n$login_token - {$_SESSION["TOKEN2"]}\n\n";
 			    // -- BKP cliente
 			    // -- -------------------------------------------------------
 				//-- --------------------------------------
-				$sql = "SELECT * FROM `_clientes` WHERE id='{$ID_CLIENTE_DEL}' LIMIT 1";
+				$sql = "SELECT * FROM `{$PREFIXO_PATH}_clientes` WHERE id='{$ID_CLIENTE_DEL}' LIMIT 1";
 				$statment = $conn->prepare($sql); $statment->execute(); 
 				$CLIENTE_DB = $statment->fetch(PDO::FETCH_ASSOC);
 				//echo "CLIENTE: {$ID_CLIENTE_DEL} - ";print_r($CLIENTE_DB); echo "\r\n-------------------------------------\r\n"; exit();
 				//-- --------------------------------------
 
 				    $sql = "
-				    	INSERT INTO `_clientes_bkp` (
+				    	INSERT INTO `{$PREFIXO_PATH}_clientes_bkp` (
 				    		`cliente_id`,
 				    		`nome`,
 				    		`telefone`,
@@ -86,7 +86,7 @@ $EXIBE_TOKEN = "\n\n$login_token - {$_SESSION["TOKEN2"]}\n\n";
 			        }
 				//-- --------------------------------------
 		$sql = "
-	    	DELETE FROM `_clientes` WHERE `_clientes`.`id` = {$ID_CLIENTE_DEL}
+	    	DELETE FROM `{$PREFIXO_PATH}_clientes` WHERE `{$PREFIXO_PATH}_clientes`.`id` = {$ID_CLIENTE_DEL}
 	    ";
 	    $statment = $conn->prepare($sql);
 	    if(!$statment->execute()){

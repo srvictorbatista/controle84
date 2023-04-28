@@ -6,7 +6,7 @@
 //-- --------------------------------------
 //-- Verifica se possui historico
 //-- --------------------------------------
-$sql = "SELECT count(*) AS `N_HISTORICO` FROM `_view_bases`;";
+$sql = "SELECT count(*) AS `N_HISTORICO` FROM `_view_{$PREFIXO_PATH}_bases`;";
 $statment = $conn->prepare($sql); $statment->execute(); 
 $HISTORICO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 // echo "HISTORICO_DB: {$HISTORICO_DB['N_HISTORICO']} - ";print_r($HISTORICO_DB); echo "\r\n-------------------------------------\r\n"; exit();
@@ -23,100 +23,100 @@ if($HISTORICO_DB['N_HISTORICO'] > 0){
           $sqlResumoMensal = "
         SELECT 
         COUNT(*) + (
-          SELECT COUNT(*) FROM `_contratos_quitados`
+          SELECT COUNT(*) FROM `{$PREFIXO_PATH}_contratos_quitados`
           WHERE MONTH(`vencimento`) = @MES
               AND YEAR(`vencimento`) = @ANO
         ) AS `previsto`, 
         IFNULL(SUM(`contrato_valor_base`),0)+IFNULL((
-                SELECT SUM(`valor_pago`) FROM `_contratos_quitados`
+                SELECT SUM(`valor_pago`) FROM `{$PREFIXO_PATH}_contratos_quitados`
                 WHERE MONTH(`vencimento`) = @MES
                   AND YEAR(`vencimento`) = @ANO   
             ),0) AS `previsto_valores`,
         CONCAT('R$ ', FORMAT(
             IFNULL(IFNULL(SUM(`contrato_valor_base`),0)+IFNULL((
-                SELECT SUM(`valor_pago`) FROM `_contratos_quitados`
+                SELECT SUM(`valor_pago`) FROM `{$PREFIXO_PATH}_contratos_quitados`
                 WHERE MONTH(`vencimento`) = @MES
                   AND YEAR(`vencimento`) = @ANO   
             ),0),0)
           , 2, 'de_DE')
         ) AS `previsto_valores_formatado`,
         (
-            SELECT IFNULL(COUNT(*),0) FROM `_contratos_quitados`
+            SELECT IFNULL(COUNT(*),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
             WHERE MONTH(`quitado`) = @MES
                   AND YEAR(`quitado`) = @ANO
         ) AS `recebidos`,
         CONCAT(FORMAT(
                 IFNULL(
-                    (SELECT COUNT(*) *100 FROM `_contratos_quitados`
+                    (SELECT COUNT(*) *100 FROM `{$PREFIXO_PATH}_contratos_quitados`
                     WHERE MONTH(`quitado`) = @MES
                           AND YEAR(`quitado`) = @ANO
                     ) / (COUNT(*) + (
-                        SELECT COUNT(*) FROM `_contratos_quitados`
+                        SELECT COUNT(*) FROM `{$PREFIXO_PATH}_contratos_quitados`
                         WHERE MONTH(`vencimento`) = @MES
                           AND YEAR(`vencimento`) = @ANO
                     ))
                 ,0)
         , 1, 'de_DE'),'%') AS `recebidos_percent`,
         (
-            SELECT IFNULL(SUM(`valor_pago`),0) FROM `_contratos_quitados`
+            SELECT IFNULL(SUM(`valor_pago`),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
             WHERE MONTH(`quitado`) = @MES
                   AND YEAR(`quitado`) = @ANO
         ) AS `recebidos_valores`,
         CONCAT('R$ ', FORMAT(
             (
-            SELECT IFNULL(SUM(`valor_pago`),0) FROM `_contratos_quitados`
+            SELECT IFNULL(SUM(`valor_pago`),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
             WHERE MONTH(`quitado`) = @MES
                   AND YEAR(`quitado`) = @ANO
           ), 2, 'de_DE')
         ) AS `recebidos_valores_formatado`,
         IFNULL(COUNT(*),0)+IFNULL((
-                SELECT COUNT(*) FROM `_contratos_quitados`
+                SELECT COUNT(*) FROM `{$PREFIXO_PATH}_contratos_quitados`
                 WHERE MONTH(`vencimento`) = @MES
                   AND YEAR(`vencimento`) = @ANO   
             ),0) - (
-            SELECT IFNULL(COUNT(*),0) FROM `_contratos_quitados`
+            SELECT IFNULL(COUNT(*),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
             WHERE MONTH(`quitado`) = @MES
                   AND YEAR(`quitado`) = @ANO
         ) AS `falta`,
         CONCAT(FORMAT(
             (IFNULL(COUNT(*),0)+(
-                SELECT IFNULL(COUNT(*),0) FROM `_contratos_quitados`
+                SELECT IFNULL(COUNT(*),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
                 WHERE MONTH(`vencimento`) = @MES
                   AND YEAR(`vencimento`) = @ANO   
             ) - (
-            SELECT IFNULL(COUNT(*),0) FROM `_contratos_quitados`
+            SELECT IFNULL(COUNT(*),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
             WHERE MONTH(`quitado`) = @MES
                   AND YEAR(`quitado`) = @ANO
           ))*100/(
             IFNULL(COUNT(*),0) + (
-          SELECT IFNULL(COUNT(*),0) FROM `_contratos_quitados`
+          SELECT IFNULL(COUNT(*),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
           WHERE MONTH(`vencimento`) = @MES
               AND YEAR(`vencimento`) = @ANO
           )), 1, 'de_DE'),'%') AS `falta_percent`,
         IFNULL(SUM(`contrato_valor_base`),0)+(
-                SELECT IFNULL(SUM(`valor_pago`),0) FROM `_contratos_quitados`
+                SELECT IFNULL(SUM(`valor_pago`),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
                 WHERE MONTH(`vencimento`) = @MES
                   AND YEAR(`vencimento`) = @ANO   
             ) - (
-            SELECT IFNULL(SUM(`valor_pago`),0) FROM `_contratos_quitados`
+            SELECT IFNULL(SUM(`valor_pago`),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
             WHERE MONTH(`quitado`) = @MES
                   AND YEAR(`quitado`) = @ANO
         ) AS `falta_valores`,
 
         CONCAT('R$ ', FORMAT(
             IFNULL(SUM(`contrato_valor_base`),0)+(
-                SELECT IFNULL(SUM(`valor_pago`),0) FROM `_contratos_quitados`
+                SELECT IFNULL(SUM(`valor_pago`),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
                 WHERE MONTH(`vencimento`) = @MES
                   AND YEAR(`vencimento`) = @ANO   
             ) - (
-            SELECT IFNULL(SUM(`valor_pago`),0) FROM `_contratos_quitados`
+            SELECT IFNULL(SUM(`valor_pago`),0) FROM `{$PREFIXO_PATH}_contratos_quitados`
             WHERE MONTH(`quitado`) = @MES
                   AND YEAR(`quitado`) = @ANO
           ), 2, 'de_DE') 
         ) AS `falta_valores_formatado`,
         DATE_FORMAT(CONCAT(@ANO,'-',@MES,'-00'), '%M') AS `mes`,
         DATE_FORMAT(CONCAT(@ANO,'-',@MES,'-00'), '%Y') AS `ano`
-        FROM `_view_bases`
+        FROM `_view_{$PREFIXO_PATH}_bases`
         WHERE MONTH(`contrato_vencimento`) = @MES
               AND YEAR(`contrato_vencimento`) = @ANO;
          -- -----------------------------------

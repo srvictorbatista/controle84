@@ -22,7 +22,7 @@
         SELECT 
           `id`,`nome`,`descricao`,`valor_base`,
           CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco` 
-        FROM `_pacotes`
+        FROM `{$PREFIXO_PATH}_pacotes`
         WHERE `nome` LIKE '%$search%'
         OR `descricao` LIKE '%$search%'
         ORDER BY `id` DESC
@@ -30,7 +30,7 @@
         -- ----------------------------------------------------------
     ";
      /* Conta quantos registos existem na tabela */  
-      $sqlContador = "SELECT COUNT(*) AS total_registros FROM _pacotes WHERE `nome` LIKE '%$search%'"; 
+      $sqlContador = "SELECT COUNT(*) AS total_registros FROM {$PREFIXO_PATH}_pacotes WHERE `nome` LIKE '%$search%'"; 
 
  }else{ $search='';  // listagem sem pesquisa
 $PESQ = " <span style=\"color:#AAA;\">Listagem de Pacotes</span>";
@@ -41,13 +41,13 @@ $AUTOFOCUS2 = "";
         SELECT 
           `id`,`nome`,`descricao`,`valor_base`,
           CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco`
-        FROM `_pacotes`
+        FROM `{$PREFIXO_PATH}_pacotes`
         ORDER BY `id` DESC
          LIMIT {$linha_inicial}, " . QTDE_REGISTROS . "
         -- ----------------------------------------------------------
     ";
      /* Conta quantos registos existem na tabela */  
-     $sqlContador = "SELECT COUNT(*) AS total_registros FROM _pacotes"; 
+     $sqlContador = "SELECT COUNT(*) AS total_registros FROM {$PREFIXO_PATH}_pacotes"; 
 }
  $stm = $conn->prepare($sql);
  $stm->execute();   

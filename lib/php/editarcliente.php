@@ -22,6 +22,7 @@ $cliente_val = str_replace($cliente_val2, $cliente_val1, $cliente_edit_valor_con
 $cliente_val = preg_replace('/[^\d\|]/', '', $cliente_val);
 $cliente_edit_valor_contrato = str_replace('|', ',', $cliente_val);
 $venc = filter_input(INPUT_POST, 'venc', FILTER_SANITIZE_STRING);
+$aviso_contrato='';
 
 
 $cliente_edit_nome = mb_strtoupper($cliente_edit_nome); // Todo o nome para maiusculo
@@ -79,7 +80,7 @@ if(strlen($cliente_edit_telefone) <= 10){$cliente_edit_telefone='';}
 		//-- --------------------------------------------------------
 		//-- --------------------------------------
 		$aviso_contrato='';
-		$sql = "SELECT * FROM `_contratos` WHERE cliente_id='{$cliente_edit_id}' LIMIT 1";
+		$sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` WHERE cliente_id='{$cliente_edit_id}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		$CONTRATO_DB['valor'] = str_replace('.', ',', $CONTRATO_DB['valor']);
@@ -87,7 +88,7 @@ if(strlen($cliente_edit_telefone) <= 10){$cliente_edit_telefone='';}
 		//-- --------------------------------------
 			$aviso_contrato = "<span class=\"badge bg-success bg-white\" style=\"font-size:15px;\">Ultimo vencimento foi quitado.</span> <br>";
 		    $sql = "
-		    	INSERT INTO `_contratos_quitados` (
+		    	INSERT INTO `{$PREFIXO_PATH}_contratos_quitados` (
 		    		`cliente_id`,
 		    		`pacote_id`,
 		    		`pacote_titulo`,
@@ -127,14 +128,14 @@ if(strlen($cliente_edit_telefone) <= 10){$cliente_edit_telefone='';}
 		/**/
 
 		$sql = "
-			DELETE FROM `_contratos` 
-			WHERE `_contratos`.`cliente_id` = :id;    
+			DELETE FROM `{$PREFIXO_PATH}_contratos` 
+			WHERE `{$PREFIXO_PATH}_contratos`.`cliente_id` = :id;    
 	    ";
             //-- --------------------------------------
             //-- REGISTRO DE LOG
             //-- --------------------------------------
 				//-- --------------------------------------
-				$_try_sql = "SELECT * FROM `_contratos` ORDER BY `id` DESC LIMIT 1";
+				$_try_sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` ORDER BY `id` DESC LIMIT 1";
 				$statment = $conn->prepare($_try_sql); $statment->execute(); 
 				$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 				//echo "CONTRATO_DB: ";print_r($CONTRATO_DB); echo "\r\n-------------------------------------\r\n";
@@ -211,11 +212,11 @@ if(strlen($cliente_edit_telefone) <= 10){$cliente_edit_telefone='';}
 
 
 		$sql = "
-	    	UPDATE `_clientes` SET
+	    	UPDATE `{$PREFIXO_PATH}_clientes` SET
 	    		`nome` = :nome,
 	    		`telefone` = :telefone,
 	    		`email` = :email  	
-	    	  WHERE `_clientes`.`id` = :id;    		
+	    	  WHERE `{$PREFIXO_PATH}_clientes`.`id` = :id;    		
     
 	    ";
 	            //-- --------------------------------------
@@ -234,7 +235,7 @@ if(strlen($cliente_edit_telefone) <= 10){$cliente_edit_telefone='';}
 		//-- --------------------------------------
 
 //-- --------------------------------------
-$sql = "SELECT * FROM `_contratos` WHERE cliente_id='{$cliente_edit_id}' LIMIT 1";
+$sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` WHERE cliente_id='{$cliente_edit_id}' LIMIT 1";
 $statment = $conn->prepare($sql); $statment->execute(); 
 $CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 $CONTRATO_DB['valor'] = @str_replace('.', ',', $CONTRATO_DB['valor']);
@@ -250,7 +251,7 @@ $aviso_contrato='';
 if(@($CONTRATO_DB['id'] > 0) && ($CONTRATO_DB['vencimento'] < $cliente_edit_venc)){
 	$aviso_contrato .= "<span class=\"badge bg-success bg-white\" style=\"font-size:15px;\">Vencimento anterior quitado.</span> <br>";
     $sql = "
-		    	INSERT INTO `_contratos_quitados` (
+		    	INSERT INTO `{$PREFIXO_PATH}_contratos_quitados` (
 		    		`cliente_id`,
 		    		`pacote_id`,
 		    		`pacote_titulo`,
@@ -301,7 +302,7 @@ if($cliente_edit_pacoteid < 1){
  	$PACOTE_DB['descricao'] = '';
  	// echo "PACOTE: ";print_r($PACOTE_DB); echo "\r\n-------------------------------------\r\n";
 }else{
-	$sql = "SELECT nome, descricao FROM `_pacotes` WHERE id='{$cliente_edit_pacoteid}' LIMIT 1";
+	$sql = "SELECT nome, descricao FROM `{$PREFIXO_PATH}_pacotes` WHERE id='{$cliente_edit_pacoteid}' LIMIT 1";
 	$statment = $conn->prepare($sql); $statment->execute();
 	$PACOTE_NOME='';$PACOTE_DESC='';$PACOTE_VALO='';
 	$PACOTE_DB = $statment->fetch(PDO::FETCH_ASSOC);
@@ -316,7 +317,7 @@ if(empty($CONTRATO_DB['id'])){
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	$aviso_contrato .= "<span class=\"badge bg-success bg-warning\" style=\"font-size:15px;\">Novo contrato atribuido.</span> <br>";
     $sql = "
-    	INSERT INTO `_contratos` (
+    	INSERT INTO `{$PREFIXO_PATH}_contratos` (
     		`cliente_id`,
     		`pacote_id`,
     		`pacote_titulo`,
@@ -356,7 +357,7 @@ if(empty($CONTRATO_DB['id'])){
             //-- REGISTRO DE LOG
             //-- --------------------------------------
 				//-- --------------------------------------
-				$_try_sql = "SELECT * FROM `_contratos` ORDER BY `id` DESC LIMIT 1";
+				$_try_sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` ORDER BY `id` DESC LIMIT 1";
 				$statment = $conn->prepare($_try_sql); $statment->execute(); 
 				$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 				//echo "CONTRATO_DB: ";print_r($CONTRATO_DB); echo "\r\n-------------------------------------\r\n";
@@ -372,7 +373,7 @@ if(empty($CONTRATO_DB['id'])){
 		//-- --------------------------------------------------------
 		//-- --------------------------------------
 		//$aviso_contrato='';
-		$sql = "SELECT * FROM `_contratos` WHERE cliente_id='{$cliente_edit_id}' LIMIT 1";
+		$sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` WHERE cliente_id='{$cliente_edit_id}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		$CONTRATO_DB['valor'] = str_replace('.', ',', $CONTRATO_DB['valor']);
@@ -380,7 +381,7 @@ if(empty($CONTRATO_DB['id'])){
 		//-- --------------------------------------
 			$aviso_contrato = "<span class=\"badge bg-success bg-white\" style=\"font-size:15px;\">Ultimo vencimento foi quitado.</span> <br>";
 		    $sql = "
-		    	INSERT INTO `_contratos_quitados` (
+		    	INSERT INTO `{$PREFIXO_PATH}_contratos_quitados` (
 		    		`cliente_id`,
 		    		`pacote_id`,
 		    		`pacote_titulo`,
@@ -424,7 +425,7 @@ if(empty($CONTRATO_DB['id'])){
 }else{
     //$cliente_edit_valor_contrato = str_replace(',', '.', $cliente_edit_valor_contrato);
     $sql = "
-    	UPDATE `_contratos` SET 
+    	UPDATE `{$PREFIXO_PATH}_contratos` SET 
     	`pacote_id` = :pacote_id,
     	`pacote_titulo` = :pacote_titulo,
     	`pacote_descricao` = :pacote_descricao,

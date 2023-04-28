@@ -108,7 +108,7 @@ if(
         $sql = "SELECT * FROM `user_profiles` WHERE email='{$email}' LIMIT 1";
         $statment = $conn->prepare($sql); $statment->execute(); 
         $USER_DB = $statment->fetch(PDO::FETCH_ASSOC);
-         //echo "USER_DB: ";print_r($USER_DB); echo "\r\n-------------------------------------\r\n"; exit();
+        // echo "USER_DB: ";print_r($USER_DB); echo "\r\n-------------------------------------\r\n"; exit();
         //-- --------------------------------------
 
 

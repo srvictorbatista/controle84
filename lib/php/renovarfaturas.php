@@ -32,14 +32,14 @@ $RETONRO_RENOV="";
 	FOREACH(explode(',', str_replace('check','', $renovarfaturas_id)) AS $ID_CLIENTE_RENOV){ 
 		$aviso_contrato=''; $aviso_data_venc='';
 		//-- --------------------------------------
-		$sql = "SELECT * FROM `_clientes` WHERE id='{$ID_CLIENTE_RENOV}' LIMIT 1";
+		$sql = "SELECT * FROM `{$PREFIXO_PATH}_clientes` WHERE id='{$ID_CLIENTE_RENOV}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$CLIENTE_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		//echo "CLIENTE_DB: ";print_r($CLIENTE_DB); echo "\r\n-------------------------------------\r\n";
 		//-- --------------------------------------
 
 		//-- --------------------------------------
-		$sql = "SELECT * FROM `_contratos` WHERE cliente_id='{$ID_CLIENTE_RENOV}' LIMIT 1";
+		$sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` WHERE cliente_id='{$ID_CLIENTE_RENOV}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		$CONTRATO_DB['valor'] = @str_replace('.', ',', $CONTRATO_DB['valor']);
@@ -59,7 +59,7 @@ $RETONRO_RENOV="";
 		//-- -------------------------------------------------------------------------
 			$aviso_contrato .= "<span class=\"badge bg-success bg-white\" style=\"font-size:15px;\">Vencimento anterior quitado!</span> <br>";
 		    $sql = "
-				    	INSERT INTO `_contratos_quitados` (
+				    	INSERT INTO `{$PREFIXO_PATH}_contratos_quitados` (
 				    		`cliente_id`,
 				    		`pacote_id`,
 				    		`pacote_titulo`,
@@ -108,7 +108,7 @@ $RETONRO_RENOV="";
 		 	$PACOTE_DB['descricao'] = '';
 		 	// echo "PACOTE: ";print_r($PACOTE_DB); echo "\r\n-------------------------------------\r\n";
 		}else{
-			$sql = "SELECT nome, descricao FROM `_pacotes` WHERE id='{$CONTRATO_DB['pacote_id']}' LIMIT 1";
+			$sql = "SELECT nome, descricao FROM `{$PREFIXO_PATH}_pacotes` WHERE id='{$CONTRATO_DB['pacote_id']}' LIMIT 1";
 			$statment = $conn->prepare($sql); $statment->execute();
 			$PACOTE_NOME='';$PACOTE_DESC='';$PACOTE_VALO='';
 			$PACOTE_DB = $statment->fetch(PDO::FETCH_ASSOC);
@@ -123,7 +123,7 @@ $RETONRO_RENOV="";
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			$aviso_contrato .= "<span class=\"badge bg-success bg-warning\" style=\"font-size:15px;\">Novo contrato atribuido.</span> <br>";
 		    $sql = "
-		    	INSERT INTO `_contratos` (
+		    	INSERT INTO `{$PREFIXO_PATH}_contratos` (
 		    		`cliente_id`,
 		    		`pacote_id`,
 		    		`pacote_titulo`,
@@ -162,7 +162,7 @@ $RETONRO_RENOV="";
 		//-- --------------------------------------
 		}else{
 		    $sql = "
-		    	UPDATE `_contratos` SET 
+		    	UPDATE `{$PREFIXO_PATH}_contratos` SET 
 		    	`pacote_id` = :pacote_id,
 		    	`pacote_titulo` = :pacote_titulo,
 		    	`pacote_descricao` = :pacote_descricao,
@@ -177,7 +177,7 @@ $RETONRO_RENOV="";
 					    ), 
 		    	-- `vencimento` = DATE(:vencimento)+INTERVAL 28 DAY
 		    	 `vencimento` = DATE_ADD(:vencimento, INTERVAL 1 MONTH)
-		    	WHERE `_contratos`.`cliente_id` = :cliente_id;
+		    	WHERE `{$PREFIXO_PATH}_contratos`.`cliente_id` = :cliente_id;
 		    ";
 
 		    $statment = $conn->prepare($sql);
@@ -198,7 +198,7 @@ $RETONRO_RENOV="";
 
 
 		//-- --------------------------------------
-		$sql = "SELECT * FROM `_contratos` WHERE cliente_id='{$ID_CLIENTE_RENOV}' LIMIT 1";
+		$sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` WHERE cliente_id='{$ID_CLIENTE_RENOV}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		//echo "CONTRATO_DB: ";print_r($CONTRATO_DB); echo "\r\n-------------------------------------\r\n";

@@ -124,7 +124,7 @@ $venc = filter_input(INPUT_POST, 'venc', FILTER_SANITIZE_STRING);
 
 
 		$sql = "
-	    	UPDATE `_contratos_quitados` SET
+	    	UPDATE `{$PREFIXO_PATH}_contratos_quitados` SET
 	    		`pacote_id` 		= :pacote_id,
 	    	 -- `pacote_titulo` 	= :pacote_titulo,
 	    	 -- `pacote_descricao` 	= :pacote_descricao,
@@ -169,7 +169,7 @@ $sql = "SELECT
     CONCAT('R$ ', FORMAT(`contrato_valor_pago`, 2, 'de_DE')) AS `contrato_valor_pago_formatado`,
     DATE_FORMAT (`contrato_vencimento`, '%d/%m/%Y') AS `contrato_vencimento_formatado`,
     DATE_FORMAT (`contrato_quitado`, '%d/%m/%Y %H:%i:%s') AS `contrato_quitado_formatado`
-  FROM `_view_contratos_recebidos` WHERE id='{$pagamento_edit_id}' LIMIT 1";
+  FROM `_view{$PREFIXO_PATH}_contratos_recebidos` WHERE id='{$pagamento_edit_id}' LIMIT 1";
 $statment = $conn->prepare($sql); $statment->execute(); 
 $RECEBIDO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 $RECEBIDO_DB['contrato_valor_pago'] = @str_replace('.', ',', $RECEBIDO_DB['contrato_valor_pago']);

@@ -146,13 +146,13 @@ if($USER_ROLES_DB['count'] < 1){
         -- ----------------------------------------------------------
         SELECT *,
          CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco`  
-            FROM `_pacotes`
+            FROM `{$PREFIXO_PATH}_pacotes`
             -- WHERE id = 0
             ORDER BY (valor_base) DESC;
         -- ----------------------------------------------------------
     ";
      /* Conta quantos registos existem na tabela */  
-     $sqlContador = "SELECT COUNT(*) AS total_pacotes FROM _pacotes;"; 
+     $sqlContador = "SELECT COUNT(*) AS total_pacotes FROM {$PREFIXO_PATH}_pacotes;"; 
 
 
  $stm = $conn->prepare($sql);

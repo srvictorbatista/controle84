@@ -1001,7 +1001,7 @@ for($i = $size; $i > 0; $i--){
 			//*
 			//-- --------------------------------------
 			//-- -- Consulta se o cliente já exite ----
-			$sql = "SELECT * FROM `_view_bases` WHERE cliente_nome='{$NomeCliente}' LIMIT 1";
+			$sql = "SELECT * FROM `_view_{$PREFIXO_PATH}_bases` WHERE cliente_nome='{$NomeCliente}' LIMIT 1";
 			$statment = $conn->prepare($sql); $statment->execute(); 
 			$VIEW_BASES_DB = $statment->fetch(PDO::FETCH_ASSOC);
 			//$VIEW_BASES_DB['valor'] = @str_replace('.', ',', $VIEW_BASES_DB['valor']);
@@ -1014,7 +1014,7 @@ for($i = $size; $i > 0; $i--){
 			//////////////////////////////////////////////////////////////////
 			$aviso_novo_cliente = "<span class=\"badge bg-success\" style=\"font-size:15px;\">Cliente {$NomeCliente} importado em {$DataCadastro}.</span> <br>";
 			    $sql = "
-			    	INSERT INTO `_clientes` (
+			    	INSERT INTO `{$PREFIXO_PATH}_clientes` (
 			    		`nome`,
 			    		`telefone`,
 			    		`email`,
@@ -1038,7 +1038,7 @@ for($i = $size; $i > 0; $i--){
 
 			//-- --------------------------------------
 			//-- -- Pega o ultimo id cadastrado -------
-			$sql = "SELECT id AS cliente_id FROM `_clientes` ORDER BY id DESC LIMIT 1";
+			$sql = "SELECT id AS cliente_id FROM `{$PREFIXO_PATH}_clientes` ORDER BY id DESC LIMIT 1";
 			$statment = $conn->prepare($sql); $statment->execute(); 
 			while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){
 				$ULTIMOCLIENTE = $row_sql_cont['cliente_id'];
@@ -1048,7 +1048,7 @@ for($i = $size; $i > 0; $i--){
 			// echo "{$ContratoValorDB}";
 			//-- --------------------------------------
 			//-- --- Procura por pacotes compativeis --
-			$sql = "SELECT IFNULL(id,0) AS id, nome, descricao FROM `_pacotes` WHERE valor_base='{$ContratoValorDB}' LIMIT 1";
+			$sql = "SELECT IFNULL(id,0) AS id, nome, descricao FROM `{$PREFIXO_PATH}_pacotes` WHERE valor_base='{$ContratoValorDB}' LIMIT 1";
 			$statment = $conn->prepare($sql); $statment->execute();
 			$PACOTE_NOME='';$PACOTE_DESC='';$PACOTE_VALO='';
 			while($row_sql_cont = $statment->fetch(PDO::FETCH_ASSOC)){
@@ -1063,7 +1063,7 @@ for($i = $size; $i > 0; $i--){
 			//-- --------------------------------------
 			//-- --------------------------------------
 			    $sql = "
-			    	INSERT INTO `_contratos` (
+			    	INSERT INTO `{$PREFIXO_PATH}_contratos` (
 			    		`cliente_id`,
 			    		`pacote_id`,
 			    		`pacote_titulo`,
@@ -1106,7 +1106,7 @@ for($i = $size; $i > 0; $i--){
 					//-- Quita o primeiro contrato na data do cadastro
 					//-- --------------------------------------------------------
 					//-- --------------------------------------
-					$sql = "SELECT * FROM `_contratos` WHERE cliente_id='{$ULTIMOCLIENTE}' LIMIT 1";
+					$sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` WHERE cliente_id='{$ULTIMOCLIENTE}' LIMIT 1";
 					$statment = $conn->prepare($sql); $statment->execute(); 
 					$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 					$CONTRATO_DB['valor'] = str_replace('.', ',', $CONTRATO_DB['valor']);
@@ -1114,7 +1114,7 @@ for($i = $size; $i > 0; $i--){
 					//-- --------------------------------------
 						$aviso_contrato = "<span class=\"badge bg-success bg-white\" style=\"font-size:15px;\">Primeira quitação registrada em {$ReferenciaDiaMesAno}.</span> <br>";
 					    $sql = "
-					    	INSERT INTO `_contratos_quitados` (
+					    	INSERT INTO `{$PREFIXO_PATH}_contratos_quitados` (
 					    		`cliente_id`,
 					    		`pacote_id`,
 					    		`pacote_titulo`,
@@ -1156,7 +1156,7 @@ for($i = $size; $i > 0; $i--){
 					//-- --------------------------------------------------------
 					//-- --- Acrescenta 1 mês ao vencimento do contrato criado
 					    $sql = "
-				    	UPDATE `_contratos` SET 
+				    	UPDATE `{$PREFIXO_PATH}_contratos` SET 
 				    	`pacote_id` = :pacote_id,
 				    	`pacote_titulo` = :pacote_titulo,
 				    	`pacote_descricao` = :pacote_descricao,
@@ -1170,7 +1170,7 @@ for($i = $size; $i > 0; $i--){
 							      )
 							    ), 
 				    	`vencimento` = :vencimento
-				    	WHERE `_contratos`.`cliente_id` = :cliente_id;
+				    	WHERE `{$PREFIXO_PATH}_contratos`.`cliente_id` = :cliente_id;
 				    ";
 
 				    $statment = $conn->prepare($sql);
@@ -1193,7 +1193,7 @@ for($i = $size; $i > 0; $i--){
 					//-- Quita o contrato no vencimento de referencia
 					//-- --------------------------------------------------------
 					//-- --------------------------------------
-					$sql = "SELECT * FROM `_contratos` WHERE cliente_id='{$VIEW_BASES_DB['cliente_id']}' LIMIT 1";
+					$sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` WHERE cliente_id='{$VIEW_BASES_DB['cliente_id']}' LIMIT 1";
 					$statment = $conn->prepare($sql); $statment->execute(); 
 					$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 					$CONTRATO_DB['valor'] = @str_replace('.', ',', $CONTRATO_DB['valor']);
@@ -1201,7 +1201,7 @@ for($i = $size; $i > 0; $i--){
 					//-- --------------------------------------
 						$aviso_contrato = "<span class=\"badge bg-success bg-white\" style=\"font-size:15px;\">Quitação registrada em {$ReferenciaDiaMesAno}.</span> <br>";
 					    $sql = "
-					    	INSERT INTO `_contratos_quitados` (
+					    	INSERT INTO `{$PREFIXO_PATH}_contratos_quitados` (
 					    		`cliente_id`,
 					    		`pacote_id`,
 					    		`pacote_titulo`,
@@ -1243,7 +1243,7 @@ for($i = $size; $i > 0; $i--){
 					//-- --------------------------------------------------------
 					//-- --- Acrescenta 1 mês ao vencimento do contrato referenciado
 					    $sql = "
-				    	UPDATE `_contratos` SET 
+				    	UPDATE `{$PREFIXO_PATH}_contratos` SET 
 				    	`pacote_id` = :pacote_id,
 				    	`pacote_titulo` = :pacote_titulo,
 				    	`pacote_descricao` = :pacote_descricao,
@@ -1257,7 +1257,7 @@ for($i = $size; $i > 0; $i--){
 							      )
 							    ), 
 				    	`vencimento` = :vencimento
-				    	WHERE `_contratos`.`cliente_id` = :cliente_id;
+				    	WHERE `{$PREFIXO_PATH}_contratos`.`cliente_id` = :cliente_id;
 				    ";
 
 				    $statment = $conn->prepare($sql);

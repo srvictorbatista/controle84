@@ -55,7 +55,7 @@ $EXIBE_TOKEN = "\n\n$login_token - {$_SESSION["TOKEN2"]}\n\n";
             //-- REGISTRO DE LOG
             //-- --------------------------------------
 				//-- --------------------------------------
-				$_try_sql = "SELECT * FROM `_pacotes` WHERE `_pacotes`.`id` = '{$ID_PACOTE_DEL}' LIMIT 1";
+				$_try_sql = "SELECT * FROM `{$PREFIXO_PATH}_pacotes` WHERE `{$PREFIXO_PATH}_pacotes`.`id` = '{$ID_PACOTE_DEL}' LIMIT 1";
 				$statment = $conn->prepare($_try_sql); $statment->execute(); 
 				$PACOTE_DB = $statment->fetch(PDO::FETCH_ASSOC);
 				//echo "PACOTE_DB: ";print_r($PACOTE_DB); echo "\r\n-------------------------------------\r\n";
@@ -63,7 +63,7 @@ $EXIBE_TOKEN = "\n\n$login_token - {$_SESSION["TOKEN2"]}\n\n";
             eval( system_log("PACOTE EXCLUIDO! \\r\\n(id: {$PACOTE_DB['id']}, nome: {$PACOTE_DB['nome']}, descricao: {$PACOTE_DB['descricao']}, valor_base: {$PACOTE_DB['valor_base']})")  );
             //-- --------------------------------------
 		$sql = "
-	    	DELETE FROM `_pacotes` WHERE `_pacotes`.`id` = {$ID_PACOTE_DEL}
+	    	DELETE FROM `{$PREFIXO_PATH}_pacotes` WHERE `{$PREFIXO_PATH}_pacotes`.`id` = {$ID_PACOTE_DEL}
 	    ";
 	    $statment = $conn->prepare($sql);
 	    if(!$statment->execute()){

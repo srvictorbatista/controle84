@@ -32,7 +32,7 @@ $RETONRO_ENCER="";
 	FOREACH(explode(',', str_replace('check','', $encerrarfaturas_id)) AS $ID_CLIENTE_ENCER){ 
 		$aviso_contrato='';
 		//-- --------------------------------------
-		$sql = "SELECT * FROM `_clientes` WHERE id='{$ID_CLIENTE_ENCER}' LIMIT 1";
+		$sql = "SELECT * FROM `{$PREFIXO_PATH}_clientes` WHERE id='{$ID_CLIENTE_ENCER}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$CLIENTE_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		//echo "CLIENTE_DB: ";print_r($CLIENTE_DB); echo "\r\n-------------------------------------\r\n";
@@ -40,7 +40,7 @@ $RETONRO_ENCER="";
 		
 
 		//-- --------------------------------------
-		$sql = "SELECT * FROM `_contratos` WHERE cliente_id='{$ID_CLIENTE_ENCER}' LIMIT 1";
+		$sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` WHERE cliente_id='{$ID_CLIENTE_ENCER}' LIMIT 1";
 		$statment = $conn->prepare($sql); $statment->execute(); 
 		$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 		$CONTRATO_DB['valor'] = @str_replace('.', ',', $CONTRATO_DB['valor']);
@@ -68,7 +68,7 @@ $RETONRO_ENCER="";
 			$aviso_contrato = "<span class=\"badge bg-success bg-white\" style=\"font-size:15px;\">Vencimento {$venc_dia}/{$venc_mes}/{$venc_ano} foi quitado.</span> <br>";
 			//echo $aviso_contrato;exit();
 		    $sql = "
-		    	INSERT INTO `_contratos_quitados` (
+		    	INSERT INTO `{$PREFIXO_PATH}_contratos_quitados` (
 		    		`cliente_id`,
 		    		`pacote_id`,
 		    		`pacote_titulo`,
@@ -108,14 +108,14 @@ $RETONRO_ENCER="";
 		/**/
 
 		$sql = "
-			DELETE FROM `_contratos` 
-			WHERE `_contratos`.`cliente_id` = :id;    
+			DELETE FROM `{$PREFIXO_PATH}_contratos` 
+			WHERE `{$PREFIXO_PATH}_contratos`.`cliente_id` = :id;    
 	    ";
             //-- --------------------------------------
             //-- REGISTRO DE LOG
             //-- --------------------------------------
 				//-- --------------------------------------
-				$_try_sql = "SELECT * FROM `_contratos` ORDER BY `id` DESC LIMIT 1";
+				$_try_sql = "SELECT * FROM `{$PREFIXO_PATH}_contratos` ORDER BY `id` DESC LIMIT 1";
 				$statment = $conn->prepare($_try_sql); $statment->execute(); 
 				$CONTRATO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 				//echo "CONTRATO_DB: ";print_r($CONTRATO_DB); echo "\r\n-------------------------------------\r\n";

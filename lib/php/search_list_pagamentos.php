@@ -12,7 +12,6 @@
   $DetalheMes = substr($SearchData,0,2);	
   $DetalheAno = substr($SearchData,3,4);
 
-
    
  /* Calcula a linha inicial da consulta */  
  $linha_inicial = ($pagina_atual -1) * QTDE_REGISTROS; 
@@ -49,7 +48,7 @@
             `referencia_mes`,
             `referencia_ano`
           
-          FROM `_view_contratos_relatorios` 
+          FROM `_view_{$PREFIXO_PATH}_contratos_relatorios` 
 		  WHERE		    
 		     MONTH(`contrato_vencimento`) = {$DetalheMes}
 		     AND YEAR(`contrato_vencimento`) = {$DetalheAno}
@@ -76,7 +75,7 @@
         SELECT 
           `id`,`nome`,`descricao`,`valor_base`,
           CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco` 
-        FROM `_pacotes`
+        FROM `{$PREFIXO_PATH}_pacotes`
         WHERE `nome` LIKE '%$search%'
         OR `descricao` LIKE '%$search%'
         ORDER BY `id` DESC
@@ -85,10 +84,10 @@
         */
     ";
      /* Conta todos os registos na tabela além de uma exibição geral */
-      $sqlContador = "/* SELECT COUNT(*) AS total_registros FROM _pacotes WHERE `nome` LIKE '%$search%' */  
+      $sqlContador = "/* SELECT COUNT(*) AS total_registros FROM {$PREFIXO_PATH}_pacotes WHERE `nome` LIKE '%$search%' */  
         -- ----------------------------------------------------------
 		SELECT (
-		    SELECT COUNT(*) FROM `_view_contratos_relatorios` 
+		    SELECT COUNT(*) FROM `_view_{$PREFIXO_PATH}_contratos_relatorios` 
 				WHERE		    
 				     MONTH(`contrato_vencimento`) = {$DetalheMes}
 				     AND YEAR(`contrato_vencimento`) = {$DetalheAno}
@@ -117,7 +116,7 @@
             `referencia_mes`,
             `referencia_ano`
           
-          FROM `_view_contratos_relatorios` 
+          FROM `_view_{$PREFIXO_PATH}_contratos_relatorios` 
 		  WHERE		    
 		     MONTH(`contrato_vencimento`) = {$DetalheMes}
 		     AND YEAR(`contrato_vencimento`) = {$DetalheAno}
@@ -163,7 +162,7 @@ $AUTOFOCUS2 = "";
 			`contrato_dias_atraso`,
             `referencia_mes`,
             `referencia_ano`
-		  FROM `_view_contratos_relatorios` 
+		  FROM `_view_{$PREFIXO_PATH}_contratos_relatorios` 
 		  WHERE
 		     MONTH(`contrato_vencimento`) = {$DetalheMes}
 		     AND YEAR(`contrato_vencimento`) = {$DetalheAno}
@@ -182,7 +181,7 @@ $AUTOFOCUS2 = "";
         SELECT 
           `id`,`nome`,`descricao`,`valor_base`,
           CONCAT('R$ ', FORMAT(`valor_base`, 2, 'de_DE')) AS `preco`
-        FROM `_pacotes`
+        FROM `{$PREFIXO_PATH}_pacotes`
         ORDER BY `id` DESC
          LIMIT {$linha_inicial}, " . QTDE_REGISTROS . "
         -- ----------------------------------------------------------
@@ -192,7 +191,7 @@ $AUTOFOCUS2 = "";
      $sqlContador = "
         -- ----------------------------------------------------------
 		SELECT (
-		    SELECT COUNT(*) FROM `_view_contratos_relatorios` 
+		    SELECT COUNT(*) FROM `_view_{$PREFIXO_PATH}_contratos_relatorios` 
 				WHERE		    
 				     MONTH(`contrato_vencimento`) = {$DetalheMes}
 				     AND YEAR(`contrato_vencimento`) = {$DetalheAno}
@@ -221,7 +220,7 @@ $AUTOFOCUS2 = "";
             `referencia_mes`,
             `referencia_ano`
           
-          FROM `_view_contratos_relatorios` 
+          FROM `_view_{$PREFIXO_PATH}_contratos_relatorios` 
 		  WHERE		    
 		     MONTH(`contrato_vencimento`) = {$DetalheMes}
 		     AND YEAR(`contrato_vencimento`) = {$DetalheAno}
@@ -291,6 +290,17 @@ $AUTOFOCUS2 = "";
  $primeira_pagina = 1;
    
  /* Cálcula qual será a última página */  
+ if(@$valor->total_registros < 1){ 	
+ 		//die("SEM RECB");
+ 	        $data['success'] = false; // SEM DADOS
+		    $data['message'] = "
+		          <SCRIPT>
+		          	\$('#MDLl32E2A41C .card-title').html('<span style=\"font-size:20px;font-weight:500;\">Detalhamento de Caixa (sem dados)</span>');
+		          	\$('#MDLl32E2A41C #SelectRelatorioPagina option').html('SEM DADOS');
+		          </SCRIPT>
+		    	<p class=\"/*bg-danger*/\" style=\"border-radius: 0.20rem; color:#FFF;padding:15px 20px; text-align:center;font-weight:bold; /*cursor:pointer;*/\" onclick=\"\">Nenhum registro encontrado!</p>  ";
+		  die( json_encode($data) );
+ }
  $ultima_pagina  = ceil($valor->total_registros / QTDE_REGISTROS);
    
  /* Cálcula qual será a página anterior em relação a página atual em exibição */   

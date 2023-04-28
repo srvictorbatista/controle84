@@ -5,7 +5,7 @@
 //-- --------------------------------------
 //-- Verifica se possui historico
 //-- --------------------------------------
-$sql = "SELECT count(*) AS `N_HISTORICO` FROM `_view_bases`;";
+$sql = "SELECT count(*) AS `N_HISTORICO` FROM `_view_{$PREFIXO_PATH}_bases`;";
 $statment = $conn->prepare($sql); $statment->execute(); 
 $HISTORICO_DB = $statment->fetch(PDO::FETCH_ASSOC);
 // echo "HISTORICO_DB: {$HISTORICO_DB['N_HISTORICO']} - ";print_r($HISTORICO_DB); echo "\r\n-------------------------------------\r\n"; exit();
